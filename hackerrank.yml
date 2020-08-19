@@ -1,0 +1,18 @@
+---
+version: 1.0
+configuration:
+  has_webserver: false
+  readonly_paths:
+    - tests/internal/*
+  scoring:
+    command: "bash python_install.sh; python3 -m venv venv; source venv/bin/activate; pip3 install -r requirements.txt; pytest tests/internal --junitxml=unit.xml"
+    files:
+      - unit.xml
+  ide_config:
+    default_open_files:
+    - app/__init__.py
+    - app/models.py
+    project_menu:
+      run: "source venv/bin/activate; flask init-db; flask run -p 8000"
+      install: "bash python_install.sh; python3 -m venv venv; source venv/bin/activate; pip3 install -r requirements.txt;"
+      test: rm -rf unit.xml; source venv/bin/activate; pytest --junitxml=unit.xml --tb=short
